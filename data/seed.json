@@ -1,0 +1,14 @@
+{
+  "todos": [
+    "Read 2 books",
+    "Sports every day",
+    "Complete the course",
+    "Send draft to client"
+  ],
+  "deadlines": [
+    {"title": "Client draft", "due_date": "2026-03-08"},
+    {"title": "MVP demo", "due_date": "2026-03-14"}
+  ],
+  "journal": "Today focus:\n- Finalize feature cards\n- Track weekly progress\n- Keep evening for revision",
+  "chart_mode": "Line"
+}

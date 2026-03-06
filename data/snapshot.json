@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-03-06T12:19:22",
+  "username": "Mohit",
+  "todos": [
+    {
+      "id": 5,
+      "text": "Read 2 books",
+      "done": 1
+    },
+    {
+      "id": 6,
+      "text": "Sports every day",
+      "done": 1
+    },
+    {
+      "id": 7,
+      "text": "Complete the course",
+      "done": 1
+    },
+    {
+      "id": 8,
+      "text": "Send draft to client",
+      "done": 1
+    },
+    {
+      "id": 9,
+      "text": "something to do",
+      "done": 1
+    }
+  ],
+  "deadlines": [
+    {
+      "id": 5,
+      "title": "ertynsr",
+      "due_date": "2026-01-21",
+      "notified": 1
+    }
+  ],
+  "journal": "Today focus:\n- Finalize feature cards\n- Track weekly progress\n- Keep evening for revision",
+  "chart_mode": "Pie",
+  "page": "dashboard"
+}
