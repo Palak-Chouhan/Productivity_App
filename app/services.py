@@ -3,7 +3,24 @@ import threading
 import time
 from datetime import datetime
 from pathlib import Path
+import datetime
 
+class PriorityService:
+    @staticmethod
+    def assign_priority(deadline_str):
+        try:
+            today = datetime.date.today()
+            deadline = datetime.datetime.strptime(deadline_str, "%Y-%m-%d").date()
+            days_left = (deadline - today).days
+
+            if days_left <= 1:
+                return "High"
+            elif days_left <= 3:
+                return "Medium"
+            else:
+                return "Low"
+        except Exception:
+            return "Low"
 import schedule
 
 try:
@@ -54,6 +71,9 @@ class ReminderScheduler:
             due = self._parse_date(row["due_date"])
             if not due:
                 continue
+            priority = PriorityService assign_priority(row["due_date"])
+            print(f"Task: {row['title']} | Priority: {priority}")
+            
             delta = due - now
             if delta.total_seconds() <= 24 * 3600:
                 self._notify(row["title"], row["due_date"])
