@@ -41,6 +41,7 @@ class DashboardApp(ctk.CTk):
         self.nav_buttons = {}
         self.integration_buttons = {}
         self.current_page = "dashboard"
+        self.dark_mode = False
 
         self.configure(fg_color=self.colors["app_bg"])
         self.grid_columnconfigure(0, weight=1)
@@ -87,10 +88,8 @@ class DashboardApp(ctk.CTk):
 
         nav_map = {
             "Dashboard": "dashboard",
-            "Calendar": "calendar",
             "My Tasks": "tasks",
             "Statistics": "statistics",
-            "Documents": "documents",
         }
         for i, (label, page) in enumerate(nav_map.items()):
             btn = self._sidebar_btn(sidebar, label, lambda p=page: self.show_page(p))
@@ -104,11 +103,7 @@ class DashboardApp(ctk.CTk):
             text_color=self.colors["text_muted"],
         ).grid(row=7, column=0, sticky="w", padx=18, pady=(26, 6))
 
-        integration_map = {
-            "Slack": "integration_slack",
-            "Notion": "integration_notion",
-            "Plugins": "integration_plugins",
-        }
+       
         for j, (label, page) in enumerate(integration_map.items()):
             btn = self._sidebar_btn(sidebar, f"- {label}", lambda p=page: self.show_page(p), h=30)
             btn.grid(row=8 + j, column=0, padx=18, pady=2, sticky="w")
@@ -154,6 +149,12 @@ class DashboardApp(ctk.CTk):
         self.greeting_label.grid(row=0, column=0, sticky="w", padx=10)
 
         tools = ctk.CTkFrame(top, fg_color="transparent")
+        ctk.CTkButton(
+            tools,
+            text="🌙",
+            width=34,
+            height=34,
+            command=self.toggle_theme).grid(row=0, column=4)
         tools.grid(row=0, column=1, sticky="e")
 
         ctk.CTkButton(
@@ -194,6 +195,16 @@ class DashboardApp(ctk.CTk):
         self.page_container.grid_columnconfigure(0, weight=1)
         self.page_container.grid_rowconfigure(0, weight=1)
 
+    def toggle_theme(self):
+    self.dark_mode = not self.dark_mode
+    
+    if self.dark_mode:
+        ctk.set_appearance_mode("dark")
+    else:
+        ctk.set_appearance_mode("light")
+
+    self.show_page(self.current_page)
+
     def show_page(self, page_name):
         self.current_page = page_name
         self._set_sidebar_active(page_name)
@@ -208,15 +219,7 @@ class DashboardApp(ctk.CTk):
             self._build_tasks_page(self.page_container)
         elif page_name == "statistics":
             self._build_statistics_page(self.page_container)
-        elif page_name == "documents":
-            self._build_documents_page(self.page_container)
-        elif page_name == "integration_slack":
-            self._build_integration_page(self.page_container, "Slack", "Workspace sync, channels, reminders")
-        elif page_name == "integration_notion":
-            self._build_integration_page(self.page_container, "Notion", "Pages, tasks, and content sync")
-        elif page_name == "integration_plugins":
-            self._build_integration_page(self.page_container, "Plugins", "Manage installed plugins and add-ons")
-
+       
     def _set_sidebar_active(self, page_name):
         for page, btn in self.nav_buttons.items():
             is_active = page == page_name
@@ -343,34 +346,6 @@ class DashboardApp(ctk.CTk):
             text_color=self.colors["text_muted"],
             font=ctk.CTkFont(size=15),
         ).grid(row=1, column=0, sticky="w", padx=20, pady=12)
-
-    def _build_integration_page(self, parent, title, subtitle):
-        card = self._page_card(parent, title)
-        ctk.CTkLabel(
-            card,
-            text=subtitle,
-            text_color=self.colors["text_muted"],
-            font=ctk.CTkFont(size=15),
-        ).grid(row=1, column=0, sticky="w", padx=20, pady=(0, 14))
-
-        rows = ctk.CTkFrame(card, fg_color="transparent")
-        rows.grid(row=2, column=0, sticky="nsew", padx=20, pady=(0, 18))
-        rows.grid_columnconfigure(0, weight=1)
-
-        for i, name in enumerate([f"{title} workspace A", f"{title} workspace B", f"{title} workspace C"]):
-            line = ctk.CTkFrame(rows, fg_color="#ffffff", corner_radius=10, border_color=self.colors["stroke"], border_width=1)
-            line.grid(row=i, column=0, sticky="ew", pady=5)
-            line.grid_columnconfigure(0, weight=1)
-            ctk.CTkLabel(line, text=name, text_color=self.colors["text"]).grid(row=0, column=0, sticky="w", padx=10, pady=9)
-            ctk.CTkButton(
-                line,
-                text="Connect",
-                width=82,
-                height=28,
-                fg_color="#1b1b1b",
-                hover_color="#2d2d2d",
-                text_color="#ffffff",
-            ).grid(row=0, column=1, padx=8, pady=5)
 
     def _page_card(self, parent, title):
         card = ctk.CTkFrame(
