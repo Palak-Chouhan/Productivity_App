@@ -86,16 +86,13 @@ class ReminderScheduler:
         except ValueError:
             return None
 
-    def _notify(self, title: str, due_date: str):
-        msg = f"Deadline approaching: {title} (due {due_date})"
+    def _notify(self, title, due_date):
+        message = f"{title} is due on {due_date}"
         if notification:
-            try:
                 notification.notify(
-                    title="Dashboard Reminder",
-                    message=msg,
-                    timeout=8,
+                    title="Task Reminder",
+                    message=message,
+                    timeout=5,
                 )
-                return
-            except Exception:
-                pass
-        print(msg)
+        else:
+        print("Reminder:", message)
